@@ -2,7 +2,7 @@
 
 
 This module can generate Office Open XML files for Microsoft Office 2007 and later.
-This module is not depend on any framework so you can use it for any kind of node.js application, even not 
+This module is not depend on any framework so you can use it for any kind of node.js application, even not
 web based. Also the output is a stream and not a file, not dependent on any output tool.
 This module should work on any environment that supports Node.js 0.10 including Linux, OSX and Windows.
 This module is a Javascript porting of my 'DuckWriteC++' library which doing the same in C++.
@@ -16,14 +16,16 @@ This module generates Excel (.xlsx), PowerPoint (.pptx) and Word (.pptx) documen
 - [Installation](#a2)
 - [Public API](#a3)
 - [Examples](#a4)
-- [FAQ](#a5)
-- [Hackers Wonderland](#a6)
-- [Support](#a7)
-- [Changelog](#a8)
-- [Roadmap](#a9)
-- [License](#a10)
-- [Credit](#a11)
-- [Donations](#a12)
+- [Changes made to this Fork](#a5)
+- [FAQ](#a6)
+- [Hackers Wonderland](#a7)
+- [Support](#a8)
+- [Changelog](#a9)
+- [Roadmap](#a10)
+- [License](#a11)
+- [Credit](#a12)
+- [Donations](#a13)
+
 
 <a name="a1"/>
 ## Features: ##
@@ -140,7 +142,7 @@ var pptx = officegen ({
 If you are preferring to use callbacks instead of events you can pass your callbacks to the generate method
 (see below).
 
-Now you should fill the object with data (we'll see below) and then you should call generate with 
+Now you should fill the object with data (we'll see below) and then you should call generate with
 an output stream to create the output Office document.
 
 Example with pptx:
@@ -198,7 +200,7 @@ http.createServer ( function ( request, response ) {
 
 #### MS-Office document properties (for all document types): ###
 
-The default Author of all the documents been created by officegen is 'officegen'. If you want to put anything else please 
+The default Author of all the documents been created by officegen is 'officegen'. If you want to put anything else please
 use the 'creator' option when calling the officegen function:
 
 ```js
@@ -246,7 +248,7 @@ Creating a new slide:
 slide = pptx.makeNewSlide ();
 ```
 
-The returned object from makeNewSlide representing a single slide. Use it to add objects into this slide. 
+The returned object from makeNewSlide representing a single slide. Use it to add objects into this slide.
 You must create at last one slide on your pptx/ppsx document.
 
 Inside each slide you can place objects, for example: text box, shapes, images, etc.
@@ -304,8 +306,8 @@ Line/border extra properties (only effecting if the 'line' property exist):
 
 The 'shape' property:
 
-Normally every object is a rectangle but you can change that for every object using the shape property, or in case that 
-you don't need to write any text inside that object, you can use the addShape method instead of addText. Use the shape 
+Normally every object is a rectangle but you can change that for every object using the shape property, or in case that
+you don't need to write any text inside that object, you can use the addShape method instead of addText. Use the shape
 property only if you want to use a shape other then the default and you also want to add text inside it.
 
 Shapes list:
@@ -331,11 +333,11 @@ Please note that every color property can be either:
 
 Adding images:
 
-Just pass the image file name as the first parameter to addImage and the 2nd parameter, which is optional, is normal options objects 
+Just pass the image file name as the first parameter to addImage and the 2nd parameter, which is optional, is normal options objects
 and you can use all the common properties ('cx', 'cy', 'y', 'x', etc).
 
 Examples:
-  
+
 Changing the background color of a slide:
 
 ```js
@@ -370,20 +372,20 @@ slide.addText ( [
 // Please note that you can pass object as the text parameter to addText.
 
 slide.addText ( 'Office generator', {
-	y: 66, x: 'c', cx: '50%', cy: 60, font_size: 48, 
+	y: 66, x: 'c', cx: '50%', cy: 60, font_size: 48,
 	color: '0000ff' } );
 
 slide.addText ( 'Boom!!!', {
-	y: 250, x: 10, cx: '70%', 
-	font_face: 'Wide Latin', font_size: 54, 
+	y: 250, x: 10, cx: '70%',
+	font_face: 'Wide Latin', font_size: 54,
 	color: 'cc0000', bold: true, underline: true } );
 ```
 
 #### Charts ####
 PowerPoint slides can contain charts with embedded data.  To create a chart:
- 
+
    `slide.addChart( chartInfo) `
-   
+
 Where `chartInfo` object is an object that takes the following attributes:
 
  - `data` -  an array of data, see examples below
@@ -399,7 +401,7 @@ Where `chartInfo` object is an object that takes the following attributes:
  - `valAxisCrossAtMaxCategory` - true|false (false)
  - `catAxisReverseOrder` - true|false (false)
  - `fontSize` - text size for chart, e.g. "1200" for 12pt type
- - `xml` - optional XML overrides to `<c:chart>` as a Javascript object that is mixed in 
+ - `xml` - optional XML overrides to `<c:chart>` as a Javascript object that is mixed in
 
 Also, the overall chart and  each data series take an an optional `xml` attribute, which specifies XML overrides to the `<c:series>` attribute.
 * The `xml` argument for the `chartInfo` is mixed in to the `c:chartSpace` attribute.
@@ -630,6 +632,15 @@ sheet.data[1][3] = 'abc';
 - examples/pptx_server.js - Example HTTP server that generating a PowerPoint file with your name without using files on the server side.
 
 <a name="a5"/>
+This versions has been uploaded to nodejs npm modules, the differences with the official version is that this one includes addTable function, and has extended functions for tables, like different styles to choose from.
+
+```js
+slide.addTable(rows, {x: x, y:y, cx: cx, cy:cy, style});
+```
+
+Some differences in addTable is that these values in options are not in the same scale as the the other ones, in fact.. the defaul values for x an y are (1524000, 1397000) respectivelly, so you may want to use this other scale. Also you might have noticed but the official repo has the style fixed to a ugly blue table, in this fork you can edit that easily and default table is "No Style, Table Grid:". For style codes, please visit https://msdn.microsoft.com/en-us/library/office/hh273476(v=office.14).aspx
+
+<a name="a6"/>
 
 ## Testing ##
 A basic test suite creates XLSX, PPTX, DOCX files and compares them to reference file located under `test_files`.
@@ -639,23 +650,23 @@ To run the tests, run the following at the command line within the project root:
 
 ## Hackers Wonderland: ##
 
-This section on the readme file will describe how to hack into the code. 
+This section on the readme file will describe how to hack into the code.
 Right now please refer to the code itself. More information will be added later.
 
-<a name="a6"/>
+<a name="a7"/>
 ## FAQ: ##
 
 - Q: Do you support also PPSX files?
 - A: Yes! Just pass the type 'ppsx' to makegen instead of 'pptx'.
 
-<a name="a7"/>
+<a name="a8"/>
 ## Support: ##
 
 Please visit the officegen Google Group:
 
 https://groups.google.com/forum/?fromgroups#!forum/node-officegen
 
-<a name="a8"/>
+<a name="a9"/>
 ## History: ##
 - Version 0.3.*:
   - PowerPoint:
@@ -744,7 +755,7 @@ https://groups.google.com/forum/?fromgroups#!forum/node-officegen
 
 [Changelog](https://github.com/protobi/officegen/blob/master/CHANGELOG)
 
-<a name="a9"/>
+<a name="a10"/>
 ## Roadmap: ##
 
 Features todo:
@@ -768,7 +779,7 @@ Features todo:
 
 - Stable release with stable API.
 
-<a name="a10"/>
+<a name="a11"/>
 ## License: ##
 
 (The MIT License)
@@ -794,13 +805,12 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-<a name="a11"/>
+<a name="a12"/>
 ## Credit: ##
 
 - For creating zip streams i'm using 'archiver' by cmilhench, dbrockman, paulj originally inspired by Antoine van Wel's zipstream.
 
-<a name="a12"/>
+<a name="a13"/>
 ## Donations: ##
 
 The original author is accepting tips through [Gittip](<https://www.gittip.com/Ziv-Barber>)
-
